@@ -1,5 +1,5 @@
 {
-  "name": "cdp_web_rails_session_login_task",
+  "name": "rails_session_login_task",
   "private": true,
   "dependencies": {
     "@rails/actioncable": "^6.0.0",

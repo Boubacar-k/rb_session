@@ -23,13 +23,13 @@ default: &default
 
 development:
   <<: *default
-  database: cdp_web_rails_session_login_task_development
+  database: rails_session_login_task_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
-  #username: cdp_web_rails_session_login_task
+  #username: rails_session_login_task
 
   # The password associated with the postgres role (username).
   #password:
@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: cdp_web_rails_session_login_task_test
+  database: rails_session_login_task_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: cdp_web_rails_session_login_task_production
-  username: cdp_web_rails_session_login_task
-  password: <%= ENV['CDP_WEB_RAILS_SESSION_LOGIN_TASK_DATABASE_PASSWORD'] %>
+  database: rails_session_login_task_production
+  username: rails_session_login_task
+  password: <%= ENV['rails_session_login_task_DATABASE_PASSWORD'] %>
