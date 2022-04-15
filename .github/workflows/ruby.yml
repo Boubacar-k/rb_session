@@ -37,13 +37,20 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "Add Spec Test"
-      - name: Test with RSpec
+      - name: Create Feedback
         env:
           RAILS_ENV: "test"
           DATABASE_URL: "postgres://postgres@localhost:5432/manyo_test"
         run: |
           bundle exec rails db:setup
           bundle exec rspec -r ./spec/my_formatter.rb -f MyFormatter -o .github/feedback_template.md
+        continue-on-error: true
+      - name: Rspec Results
+        env:
+          RAILS_ENV: "test"
+          DATABASE_URL: "postgres://postgres@localhost:5432/manyo_test"
+        run: |
+          bundle exec rspec
         continue-on-error: true
       - uses: JasonEtco/create-an-issue@v2
         env:
