@@ -11,6 +11,23 @@
 
   <body>
     <p id="notice"><%= notice %></p>
+    <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "#{key}") %>
+    <% end %>
+    <% if logged_in? %>
+      <nav>
+        <ul>
+          <li id="tasks_index"><%= link_to "Task list", tasks_path(current_user.id) %></li>
+          <li id="new_task"><%= link_to "Register a task", new_task_path(current_user.id) %></li>
+          <li id="my_account"><%= link_to "Account", user_path(current_user.id) %></li>
+          <li id="logout"><%= link_to "Logout", session_path(current_user.id), method: :delete %></li>
+        </ul>
+      </nav>
+    <% else %>
+      <p><%=flash[:notice] = 'Please login'%></p>
+      <li id="register"><%= link_to "Sign up", new_user_path %></li>
+      <li id="login"><%= link_to "Login", new_session_path %></li>
+    <% end %>
     <%= yield %>
   </body>
 </html>

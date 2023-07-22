@@ -1,0 +1,18 @@
+<h1>Account Details Page</h1>
+<div>Name: <%= @user.name %></div>
+<div>Email address: <%= @user.email %></div>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+    <td id="modify_user"><%= link_to "Edit", edit_user_path(current_user.id)%>|</td>
+    <td id="delete_user"><%= link_to "Delete", user_path(current_user.id), method: :delete%></td>
+    </tr>
+  </tbody>
+</table>
