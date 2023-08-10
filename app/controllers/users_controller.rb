@@ -7,39 +7,33 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.new(user_params)
-      
-        respond_to do |format|
-          if @user.save
-            log_in(@user)
-            redirect_to user_path(@user.id)
-            format.html { redirect_to root_url, notice: 'Account registered' }
-            format.json { render :index, status: :created, location: @session }
-          else
-            if @user.name.empty?
-              format.html { render :new, notice: "Please enter your name" }
-              format.json { render json: @user.errors, status: :unprocessable_entity }
-            elsif @user.email.empty?
-              format.html { render :new, notice: "Please enter your e-mail address" }
-              format.json { render json: @user.errors, status: :unprocessable_entity }
-            elsif @user.password == nil
-              format.html { render :new, notice: "Enter your password" }
-              format.json { render json: @user.errors, status: :unprocessable_entity }
-            elsif @user.password.to_s.length < 6
-              format.html { render :new, notice: "Please enter the password with at least 6 characters" }
-              format.json { render json: @user.errors, status: :unprocessable_entity }
-            elsif @user.password.to_s != @user.password_confirmation.to_s
-              format.html { render :new, notice: "Password (confirmation) and password input do not match" }
-              format.json { render json: @user.errors, status: :unprocessable_entity }
-            elsif User.exists?(email: params[:user][:email])
-              format.html { render :new, notice: "Your email address is already in use" }
-              format.json { render json: { error: "Your email address is already in use" }, status: :unprocessable_entity }
-            else
-              render :new
-            end
+      @user = User.new(user_params)
+
+      respond_to do |format|
+        if @user.save
+          log_in(@user)
+          format.html { redirect_to user_path(@user.id), notice: 'Account registered' }
+          format.json { render :index, status: :created, location: @session }
+        else
+          if @user.name.empty?
+            flash.now[:notice] = "Please enter your name"
+          elsif @user.email.empty?
+            flash.now[:notice] = "Please enter your e-mail address"
+          elsif @user.password.blank?
+            flash.now[:notice] = "Enter your password"
+          elsif @user.password.to_s.length < 6
+            flash.now[:notice] = "Please enter the password with at least 6 characters"
+          elsif @user.password.to_s != @user.password_confirmation.to_s
+            flash.now[:notice] = "Password (confirmation) and password input do not match"
+          elsif User.exists?(email: params[:user][:email])
+            flash.now[:notice] = "Your email address is already in use"
           end
+          
+          format.html { render :new }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
         end
       end
+    end 
 
     def show
         @user = User.find(params[:id])
