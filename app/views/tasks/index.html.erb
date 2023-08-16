@@ -16,7 +16,7 @@
         <td><%= task.content %></td>
         <td><%= link_to t('common.show'), task %></td>
         <td><%= link_to t('common.edit'), edit_task_path(task) %></td>
-        <td><%= link_to t('common.destroy'), task, method: :delete, data: { confirm: t('common.confirm_destroy') } %></td>
+        <td><%= link_to t('common.destroy'), task_path(task), method: :delete, data: { confirm: t('common.confirm_destroy') } %></td>
       </tr>
     <% end %>
   </tbody>
