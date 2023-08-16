@@ -18,15 +18,15 @@ class UsersController < ApplicationController
           if @user.name.empty?
             flash.now[:notice] = "Please enter your name"
           elsif @user.email.empty?
-            flash.now[:notice] = "Please enter your e-mail address"
+            flash[:notice] = "Please enter your e-mail address"
+          elsif User.exists?(email: params[:user][:email])
+            flash.now[:notice] = "Your email address is already in use"
           elsif @user.password.blank?
             flash.now[:notice] = "Enter your password"
           elsif @user.password.to_s.length < 6
             flash.now[:notice] = "Please enter the password with at least 6 characters"
           elsif @user.password.to_s != @user.password_confirmation.to_s
-            flash.now[:notice] = "Password (confirmation) and password input do not match"
-          elsif User.exists?(email: params[:user][:email])
-            flash.now[:notice] = "Your email address is already in use"
+            flash.now[:notice] =  "Password (confirmation) and password input do not match"
           end
           
           format.html { render :new }
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
     def update
         @user= current_user
         if @user.update(user_params)
-            flash[:notice] = 'account Updated succefully.'
+            flash.now[:notice] = 'account Updated succefully.'
             redirect_to user_path(@user.id)
         else
             render 'edit'
@@ -54,10 +54,13 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        session[:user_id] = nil
-        @user = User.find(params[:id])
-        @user.destroy
-        redirect_to new_session_path, flash[:notice] = 'destroyed.'
+      @user = User.find(params[:id])
+      @user.destroy
+      session[:user_id] = nil
+    
+      respond_to do |format|
+        format.html { redirect_to new_session_path, notice: 'Account destroyed successfully.' }
+      end
     end
 
     private

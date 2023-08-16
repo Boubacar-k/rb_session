@@ -10,9 +10,8 @@
   </head>
 
   <body>
-    <p id="notice"><%= notice %></p>
-    <% flash.each do |key, value| %>
-      <%= content_tag(:div, value, class: "#{key}") %>
+    <% if flash[:notice] %>
+      <p id="notice"><%= flash[:notice] %></p>
     <% end %>
     <% if logged_in? %>
       <nav>
@@ -24,7 +23,6 @@
         </ul>
       </nav>
     <% else %>
-      <p><%=flash[:notice] = 'Please login'%></p>
       <li id="register"><%= link_to "Sign up", new_user_path %></li>
       <li id="login"><%= link_to "Login", new_session_path %></li>
     <% end %>
